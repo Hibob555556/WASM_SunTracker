@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>C WASM Solar Calc</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="./src/main.css" />
+    <link rel="stylesheet" href="./src/large.css" media="(min-width: 768px)" />
+  </head>
+  <body>
+    <div id="loader">
+      <div class="spinner"></div>
+    </div>
+
+    <header>
+      <div class="container header-inner">
+        <h1>C WASM Solar Calc</h1>
+
+        <nav class="nav">
+          <a href="/" class="home-btn" aria-label="Home">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              class="home-icon"
+            >
+              <path
+                d="M3 11L12 3l9 8"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+              <path
+                d="M5 10v10h5v-6h4v6h5V10"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+            </svg>
+          </a>
+        </nav>
+
+        <p>Generate elevation data and view the current solar elevation.</p>
+      </div>
+    </header>
+
+    <main class="container app-main">
+      <section class="project controls-panel">
+        <h2>Controls</h2>
+        <div class="controls">
+          <label for="latitude">Latitude</label>
+          <input id="latitude" type="number" value="41" />
+
+          <label for="longitude">Longitude</label>
+          <input id="longitude" type="number" value="-111" />
+
+          <label for="altitude">Altitude</label>
+          <input id="altitude" type="number" value="1366" />
+
+          <div class="button-row">
+            <button id="calc-elevation">Gen Chart</button>
+            <button id="calc-curr-elevation">Get Current Elevation</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="project hidden-panel" id="elevation-panel">
+        <h2>Current Solar Elevation</h2>
+        <div class="display">
+          <p id="result"></p>
+        </div>
+      </section>
+
+      <section class="project hidden-panel" id="chart-panel">
+        <h2>Solar Elevation Graph</h2>
+        <div class="display">
+          <canvas id="solarChart" width="800" height="400"></canvas>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>Built with C, WebAssembly, and JavaScript.</p>
+    </footer>
+
+    <script>
+      window.addEventListener("load", () => {
+        const loader = document.getElementById("loader");
+        if (loader) {
+          loader.style.display = "none";
+        }
+
+        const chartBtn = document.getElementById("calc-elevation");
+        const elevationBtn = document.getElementById("calc-curr-elevation");
+        const chartPanel = document.getElementById("chart-panel");
+        const elevationPanel = document.getElementById("elevation-panel");
+
+        if (chartBtn && chartPanel) {
+          chartBtn.addEventListener("click", () => {
+            chartPanel.classList.add("visible");
+          });
+        }
+
+        if (elevationBtn && elevationPanel) {
+          elevationBtn.addEventListener("click", () => {
+            elevationPanel.classList.add("visible");
+          });
+        }
+      });
+    </script>
+    <script src="main.js"></script>
+    <script src="./src/index.js" type="module"></script>
+  </body>
+</html>

@@ -1,0 +1,26 @@
+/* Styles for larger screens */
+@media (min-width: 768px) {
+  body {
+    margin: auto;
+    max-width: 800px;
+  }
+
+  .project {
+    padding: 30px;
+  }
+
+  .button-row {
+    justify-content: center;
+  }
+
+  .header-inner {
+    align-items: center;
+  }
+
+  .nav {
+    position: absolute;
+    top: 20px;
+    right: 0;
+    margin-top: 0;
+  }
+}

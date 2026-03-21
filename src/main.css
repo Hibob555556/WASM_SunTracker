@@ -1,0 +1,276 @@
+/* Mobile-first styles */
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+        Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    background-color: #000;
+    color: #0f0;
+    opacity: 0;
+    animation: fadeInPage 0.8s forwards;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 20px 0;
+    border-bottom: 1px solid #0f0;
+}
+
+.container {
+    width: 90%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.app-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.app-main > .project {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.project {
+    background: #111;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 255, 0, 0.2);
+    transition: transform 0.2s, box-shadow 0.2s;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: entry 0.6s forwards;
+}
+
+.project:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 8px rgba(0, 255, 0, 0.4);
+}
+
+.controls-panel {
+    text-align: center;
+}
+
+.controls,
+.display {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.controls {
+    max-width: 720px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.controls label {
+    font-weight: 600;
+}
+
+.controls input,
+.controls button {
+    background: #000;
+    color: #0f0;
+    border: 1px solid #0f0;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font: inherit;
+    box-sizing: border-box;
+}
+
+.controls input {
+    width: 100%;
+}
+
+.controls input::placeholder {
+    color: #7dff7d;
+}
+
+.controls button {
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+
+.controls button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 255, 0, 0.25);
+    background-color: #111;
+}
+
+.button-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.display {
+    align-items: center;
+    text-align: center;
+}
+
+.hidden-panel {
+    display: none;
+}
+
+.hidden-panel.visible {
+    display: block;
+    animation: entry 0.6s forwards;
+}
+
+canvas,
+#result {
+    width: 100%;
+    max-width: 100%;
+    background: #000;
+    color: #0f0;
+    border: 1px solid #0f0;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+#solarChart {
+    display: block;
+    margin: 0 auto;
+}
+
+#result {
+    margin: 0;
+    padding: 12px;
+    min-height: 48px;
+    max-width: 720px;
+}
+
+#loader {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+#loader .spinner {
+    width: 60px;
+    height: 60px;
+    border: 6px solid #0f0;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+footer {
+    text-align: center;
+    margin-top: 50px;
+    padding: 15px 0 25px;
+    border-top: 1px solid #0f0;
+    font-size: 0.9rem;
+    color: #0f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+a {
+    color: #0f0;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #afa;
+}
+
+section {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+        Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+.header-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav {
+    margin-top: 5px;
+}
+
+.home-btn {
+    display: inline-block;
+    padding: 6px 14px;
+    border: 1px solid #0f0;
+    border-radius: 6px;
+    background: #000;
+    color: #0f0;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+
+.home-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 255, 0, 0.25);
+    background-color: #111;
+}
+
+.header-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+}
+
+.nav {
+    margin-top: 5px;
+}
+
+.home-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border: 1px solid #0f0;
+    border-radius: 8px;
+    background: #000;
+    color: #0f0;
+    transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+
+.home-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 255, 0, 0.25);
+    background-color: #111;
+}
+
+.home-icon {
+    width: 20px;
+    height: 20px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes fadeInPage {
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes entry {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
