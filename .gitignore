@@ -1,0 +1,57 @@
+# =========================
+# Build Outputs
+# =========================
+*.wasm
+*.js.mem
+*.html.mem
+*.o
+*.bc
+
+# Emscripten cache / SDK (if local)
+emsdk/
+.cache/
+
+# =========================
+# Node / Frontend
+# =========================
+node_modules/
+dist/
+build/
+
+# =========================
+# Logs
+# =========================
+*.log
+
+# =========================
+# OS Files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# IDE / Editor
+# =========================
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# =========================
+# Windows
+# =========================
+*.exe
+
+# =========================
+# Environment
+# =========================
+.env
+
+# =========================
+# Optional: ignore generated wasm bundle
+# Uncomment if you DON'T want compiled output in repo
+# =========================
+# main.js
+# main.wasm
