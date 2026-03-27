@@ -224,6 +224,10 @@ ul {
   width: 100%;
 }
 
+.page-shell > section + section {
+  margin-top: 1.6rem;
+}
+
 .hero-copy,
 .feature-card,
 .converter-card,
@@ -505,14 +509,6 @@ ul {
   text-align: center;
 }
 
-.hidden-panel {
-  display: none;
-}
-
-.hidden-panel.visible {
-  display: block;
-}
-
 .result-block {
   margin-top: 1.5rem;
 }
@@ -556,6 +552,10 @@ canvas {
 #solarChart {
   display: block;
   margin: 0 auto;
+}
+
+#solarChart.is-hidden {
+  display: none;
 }
 
 .site-footer {

@@ -6,7 +6,53 @@ const chartPalette = {
   grid: "rgba(255, 255, 255, 0.08)",
   ticks: "#d7e4fb",
   label: "#9fb0cb",
+  noonLine: "rgba(255, 210, 121, 0.95)",
+  noonGlow: "rgba(255, 210, 121, 0.2)",
 };
+
+const solarNoonPlugin = {
+  id: "solarNoonPlugin",
+  afterDatasetsDraw(chart) {
+    const noonIndex = chart?.options?.plugins?.solarNoonMarker?.index;
+    if (typeof noonIndex !== "number") return;
+
+    const xScale = chart.scales.x;
+    const yScale = chart.scales.y;
+    if (!xScale || !yScale) return;
+
+    const x = xScale.getPixelForValue(noonIndex);
+    const top = yScale.top;
+    const bottom = yScale.bottom;
+    const ctx = chart.ctx;
+
+    ctx.save();
+
+    ctx.strokeStyle = chartPalette.noonGlow;
+    ctx.lineWidth = 8;
+    ctx.beginPath();
+    ctx.moveTo(x, top);
+    ctx.lineTo(x, bottom);
+    ctx.stroke();
+
+    ctx.strokeStyle = chartPalette.noonLine;
+    ctx.lineWidth = 2;
+    ctx.setLineDash([6, 6]);
+    ctx.beginPath();
+    ctx.moveTo(x, top);
+    ctx.lineTo(x, bottom);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.fillStyle = chartPalette.noonLine;
+    ctx.font = '12px "Space Grotesk", sans-serif';
+    ctx.textAlign = "center";
+    ctx.fillText("Solar Noon", x, top + 16);
+
+    ctx.restore();
+  },
+};
+
+Chart.register(solarNoonPlugin);
 
 Module.onRuntimeInitialized = () => {
   const getSolarElevation = Module.cwrap("get_solar_elevation", "number", [
@@ -24,8 +70,6 @@ Module.onRuntimeInitialized = () => {
 
   const calcElevationBtn = document.getElementById("calc-elevation");
   const calcCurrElevationBtn = document.getElementById("calc-curr-elevation");
-  const chartPanel = document.getElementById("chart-panel");
-  const elevationPanel = document.getElementById("elevation-panel");
 
   if (calcElevationBtn) {
     calcElevationBtn.onclick = () => {
@@ -67,10 +111,6 @@ Module.onRuntimeInitialized = () => {
         }
       }
 
-      if (chartPanel) {
-        chartPanel.classList.add("visible");
-      }
-
       popChart(dataPoints, labels);
     };
   }
@@ -98,10 +138,6 @@ Module.onRuntimeInitialized = () => {
         time[6]
       );
 
-      if (elevationPanel) {
-        elevationPanel.classList.add("visible");
-      }
-
       setResult(`Solar Elevation: ${Number(elevation).toFixed(2)}\u00B0`);
     };
   }
@@ -115,14 +151,27 @@ function setResult(res) {
 
 function popChart(dataPoints, labels) {
   const canvas = document.getElementById("solarChart");
+  const chartStatus = document.getElementById("chart-status");
   if (!canvas) return;
 
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
 
+  if (chartStatus) {
+    chartStatus.textContent = "Solar elevation graph generated for the current day.";
+  }
+
+  canvas.classList.remove("is-hidden");
+
+  const noonIndex = dataPoints.reduce(
+    (bestIndex, value, index, values) => (value > values[bestIndex] ? index : bestIndex),
+    0
+  );
+
   if (solarChart) {
     solarChart.data.labels = labels;
     solarChart.data.datasets[0].data = dataPoints;
+    solarChart.options.plugins.solarNoonMarker.index = noonIndex;
     solarChart.update();
     return;
   }
@@ -149,6 +198,9 @@ function popChart(dataPoints, labels) {
       responsive: true,
       maintainAspectRatio: true,
       plugins: {
+        solarNoonMarker: {
+          index: noonIndex,
+        },
         legend: {
           display: true,
           labels: {
