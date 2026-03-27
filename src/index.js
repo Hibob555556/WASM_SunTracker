@@ -532,20 +532,26 @@ function ensureUtcOffsetField() {
 
   const browserOffset = (new Date().getTimezoneOffset() / 60) * -1;
   const buttonAnchor = calcElevationBtn ?? calcCurrElevationBtn;
-  const referenceGroup =
+  const insertionTarget =
     buttonAnchor?.closest(".actions, .button-row, .button-group, .controls, .field, .form-group, .input-group, .control, label") ??
     buttonAnchor?.parentElement ??
+    altitudeInput?.closest(".field, .form-group, .input-group, .control, label") ??
+    altitudeInput?.parentElement;
+  const fieldTemplate =
     altitudeInput?.closest(".field, .form-group, .input-group, .control, label") ??
     altitudeInput?.parentElement;
   const wrapperTag = "div";
   const wrapper = document.createElement(wrapperTag);
 
-  if (referenceGroup?.className) {
-    wrapper.className = referenceGroup.className;
+  if (fieldTemplate?.className) {
+    wrapper.className = fieldTemplate.className;
   }
+  wrapper.style.width = "100%";
+  wrapper.style.display = "grid";
+  wrapper.style.gap = "0.75rem";
 
   const label = document.createElement("label");
-  const referenceLabel = referenceGroup?.querySelector?.("label");
+  const referenceLabel = fieldTemplate?.querySelector?.("label");
   if (referenceLabel?.className) {
     label.className = referenceLabel.className;
   }
@@ -565,9 +571,22 @@ function ensureUtcOffsetField() {
   if (altitudeInput.className) {
     input.className = altitudeInput.className;
   }
+  input.style.width = "100%";
+  input.style.boxSizing = "border-box";
 
-  wrapper.append(label, input);
-  referenceGroup?.insertAdjacentElement("beforebegin", wrapper);
+  const note = document.createElement("p");
+  note.textContent =
+    "Leave blank to use your browser settings. Change it if you're checking a location outside your timezone.";
+  const helperText =
+    fieldTemplate?.parentElement?.querySelector?.("p") ??
+    fieldTemplate?.nextElementSibling;
+  if (helperText?.className) {
+    note.className = helperText.className;
+  }
+  note.style.margin = "0";
+
+  wrapper.append(label, input, note);
+  insertionTarget?.insertAdjacentElement("beforebegin", wrapper);
 }
 
 function formatUtcOffset(offset) {
