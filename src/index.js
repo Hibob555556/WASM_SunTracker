@@ -1,5 +1,13 @@
 let solarChart = null;
 
+const chartPalette = {
+  line: "#7cf0cf",
+  fill: "rgba(124, 240, 207, 0.18)",
+  grid: "rgba(255, 255, 255, 0.08)",
+  ticks: "#d7e4fb",
+  label: "#9fb0cb",
+};
+
 Module.onRuntimeInitialized = () => {
   const getSolarElevation = Module.cwrap("get_solar_elevation", "number", [
     "number",
@@ -54,9 +62,7 @@ Module.onRuntimeInitialized = () => {
 
           dataPoints.push(elevation);
           labels.push(
-            `${hour.toString().padStart(2, "0")}:${min
-              .toString()
-              .padStart(2, "0")}`
+            `${hour.toString().padStart(2, "0")}:${min.toString().padStart(2, "0")}`
           );
         }
       }
@@ -96,7 +102,7 @@ Module.onRuntimeInitialized = () => {
         elevationPanel.classList.add("visible");
       }
 
-      setResult(`Solar Elevation: ${Number(elevation).toFixed(2)}°`);
+      setResult(`Solar Elevation: ${Number(elevation).toFixed(2)}\u00B0`);
     };
   }
 };
@@ -124,31 +130,73 @@ function popChart(dataPoints, labels) {
   solarChart = new Chart(ctx, {
     type: "line",
     data: {
-      labels: labels,
+      labels,
       datasets: [
         {
-          label: "Solar Elevation (°)",
+          label: "Solar Elevation (\u00B0)",
           data: dataPoints,
-          borderColor: "orange",
-          backgroundColor: "rgba(255, 165, 0, 0.2)",
+          borderColor: chartPalette.line,
+          backgroundColor: chartPalette.fill,
           tension: 0.3,
           fill: true,
           pointRadius: 2,
+          pointHoverRadius: 4,
+          borderWidth: 3,
         },
       ],
     },
     options: {
       responsive: true,
+      maintainAspectRatio: true,
       plugins: {
-        legend: { display: true },
-        tooltip: { enabled: true },
+        legend: {
+          display: true,
+          labels: {
+            color: chartPalette.ticks,
+            boxWidth: 14,
+            usePointStyle: true,
+            pointStyle: "circle",
+          },
+        },
+        tooltip: {
+          enabled: true,
+          backgroundColor: "rgba(7, 17, 31, 0.94)",
+          borderColor: "rgba(124, 240, 207, 0.25)",
+          borderWidth: 1,
+          titleColor: "#f3f7ff",
+          bodyColor: "#d7e4fb",
+          padding: 12,
+        },
       },
       scales: {
         x: {
-          title: { display: true, text: "Time of Day" },
+          title: {
+            display: true,
+            text: "Time of Day",
+            color: chartPalette.label,
+          },
+          ticks: {
+            color: chartPalette.ticks,
+            maxRotation: 0,
+            autoSkip: true,
+            maxTicksLimit: 8,
+          },
+          grid: {
+            color: chartPalette.grid,
+          },
         },
         y: {
-          title: { display: true, text: "Elevation (degrees)" },
+          title: {
+            display: true,
+            text: "Elevation (degrees)",
+            color: chartPalette.label,
+          },
+          ticks: {
+            color: chartPalette.ticks,
+          },
+          grid: {
+            color: chartPalette.grid,
+          },
           min: -20,
           max: 90,
         },

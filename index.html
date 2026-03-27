@@ -4,106 +4,196 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>C WASM Solar Calc</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="./src/main.css" />
     <link rel="stylesheet" href="./src/large.css" media="(min-width: 768px)" />
   </head>
-  <body>
+  <body class="is-loading">
     <div id="loader">
-      <div class="spinner"></div>
+      <div class="loader-shell">
+        <div class="spinner"></div>
+        <div class="loader-line"></div>
+        <p class="loader-copy">Loading solar engine</p>
+      </div>
     </div>
 
-    <header>
-      <div class="container header-inner">
-        <h1>C WASM Solar Calc</h1>
-
-        <nav class="nav">
-          <a href="https://hibob555556.github.io/Portfolio/" class="home-btn" aria-label="Home">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              class="home-icon"
-            >
-              <path
-                d="M3 11L12 3l9 8"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              />
-              <path
-                d="M5 10v10h5v-6h4v6h5V10"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              />
-            </svg>
-          </a>
-        </nav>
-
-        <p>Generate elevation data and view the current solar elevation.</p>
+    <header class="site-header">
+      <div class="brand">
+        <div class="brand-mark">ST</div>
+        <div class="brand-copy">
+          <strong>SunTracker</strong>
+          <span>WASM solar elevation explorer</span>
+        </div>
       </div>
+
+      <nav class="site-nav">
+        <a href="#controls-panel" class="nav-link">Controls</a>
+        <a href="#chart-panel" class="nav-link">Chart</a>
+        <a href="#elevation-panel" class="nav-link">Current Angle</a>
+        <a href="https://hibob555556.github.io/Portfolio/" class="home-btn" aria-label="Home">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="home-icon">
+            <path d="M3 11L12 3l9 8" fill="none" stroke="currentColor" stroke-width="2" />
+            <path
+              d="M5 10v10h5v-6h4v6h5V10"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            />
+          </svg>
+        </a>
+      </nav>
     </header>
 
-    <main class="container app-main">
-      <section class="project controls-panel">
-        <h2>Controls</h2>
-        <div class="controls">
-          <label for="latitude">Latitude</label>
-          <input id="latitude" type="number" value="41" />
+    <main class="page-shell">
+      <section class="converter-section" data-reveal>
+        <div class="hero-copy converter-intro hero-copy-secondary">
+          <span class="site-tag">Solar Inputs</span>
+          <h2>Set your observation point.</h2>
+          <p class="hero-text">
+            Enter latitude, longitude, and altitude to generate a solar profile for the current
+            day, or pull the current solar elevation instantly.
+          </p>
+        </div>
 
-          <label for="longitude">Longitude</label>
-          <input id="longitude" type="number" value="-111" />
+        <div class="converter-grid">
+          <section class="converter-card controls-panel" id="controls-panel">
+            <h2>Controls</h2>
+            <div class="controls">
+              <label for="latitude">Latitude</label>
+              <input id="latitude" class="converter-input" type="number" value="41" />
 
-          <label for="altitude">Altitude</label>
-          <input id="altitude" type="number" value="1366" />
+              <label for="longitude">Longitude</label>
+              <input id="longitude" class="converter-input" type="number" value="-111" />
 
-          <div class="button-row">
-            <button id="calc-elevation">Gen Chart</button>
-            <button id="calc-curr-elevation">Get Current Elevation</button>
-          </div>
+              <label for="altitude">Altitude (meters)</label>
+              <input id="altitude" class="converter-input" type="number" value="1366" />
+
+              <p class="field-hint">
+                Use decimal coordinates and local altitude to improve the solar angle estimate.
+              </p>
+
+              <div class="button-row">
+                <button id="calc-elevation" class="button button-primary" type="button">
+                  Generate Chart
+                </button>
+                <button id="calc-curr-elevation" class="button button-secondary" type="button">
+                  Get Current Elevation
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <section class="feature-card" data-reveal>
+            <span class="site-tag">What You Get</span>
+            <h3>Solar elevation estimates at a glance.</h3>
+            <ul class="feature-list">
+              <li>Plot the sun's elevation across the full day for your location.</li>
+              <li>Check the current solar angle in real time without leaving the page.</li>
+              <li>Use the chart to spot sunrise ramp-up, solar noon, and evening decline.</li>
+            </ul>
+          </section>
         </div>
       </section>
 
-      <section class="project hidden-panel" id="elevation-panel">
+      <section class="project hidden-panel" id="elevation-panel" data-reveal>
         <h2>Current Solar Elevation</h2>
         <div class="display">
-          <p id="result"></p>
+          <p class="result-label">Current reading</p>
+          <p id="result" class="result-value">Run a calculation to see the current solar angle.</p>
         </div>
       </section>
 
-      <section class="project hidden-panel" id="chart-panel">
+      <section class="project hidden-panel" id="chart-panel" data-reveal>
         <h2>Solar Elevation Graph</h2>
         <div class="display">
           <canvas id="solarChart" width="800" height="400"></canvas>
         </div>
       </section>
+
+      <section class="hero" data-reveal>
+        <div class="hero-copy">
+          <p class="eyebrow">C + WebAssembly</p>
+          <h1>Track the sun with live elevation data.</h1>
+          <p class="hero-text">
+            Generate a full-day solar elevation graph for any coordinates and instantly check the
+            current angle above the horizon.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#controls-panel">Start Calculating</a>
+          </div>
+          <ul class="hero-metrics">
+            <li>
+              <span class="metric-value">24h</span>
+              Solar elevation sampled every 10 minutes.
+            </li>
+            <li>
+              <span class="metric-value">Live</span>
+              Current elevation calculated from your local time.
+            </li>
+            <li>
+              <span class="metric-value">WASM</span>
+              Native C calculation running in the browser.
+            </li>
+          </ul>
+        </div>
+      </section>
     </main>
 
-    <footer>
-      <p>Built with C, WebAssembly, and JavaScript.</p>
+    <footer class="site-footer" data-reveal>
+      <div class="site-footer-meta">
+        <div>
+          <span class="site-tag">SunTracker</span>
+          <p>
+            Built with C, WebAssembly, JavaScript, and Chart.js for browser-based solar analysis.
+            Use the controls above to explore the sun angle for your coordinates.
+          </p>
+        </div>
+        <div>
+          <p>&copy; 2026 SunTracker. All rights reserved.</p>
+        </div>
+      </div>
     </footer>
 
     <script>
       window.addEventListener("load", () => {
+        document.body.classList.remove("is-loading");
         const loader = document.getElementById("loader");
         if (loader) {
-          loader.style.display = "none";
+          loader.classList.add("is-hidden");
+          window.setTimeout(() => {
+            loader.style.display = "none";
+          }, 500);
         }
 
         const chartBtn = document.getElementById("calc-elevation");
         const elevationBtn = document.getElementById("calc-curr-elevation");
         const chartPanel = document.getElementById("chart-panel");
         const elevationPanel = document.getElementById("elevation-panel");
+        const revealNodes = document.querySelectorAll("[data-reveal]");
+
+        revealNodes.forEach((node, index) => {
+          window.setTimeout(() => {
+            node.classList.add("is-visible");
+          }, index * 120);
+        });
 
         if (chartBtn && chartPanel) {
           chartBtn.addEventListener("click", () => {
             chartPanel.classList.add("visible");
+            chartPanel.classList.add("is-visible");
           });
         }
 
         if (elevationBtn && elevationPanel) {
           elevationBtn.addEventListener("click", () => {
             elevationPanel.classList.add("visible");
+            elevationPanel.classList.add("is-visible");
           });
         }
       });

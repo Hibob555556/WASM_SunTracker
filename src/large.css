@@ -1,26 +1,24 @@
-/* Styles for larger screens */
 @media (min-width: 768px) {
-  body {
-    margin: auto;
-    max-width: 800px;
+  .converter-grid {
+    grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.9fr);
+    align-items: start;
   }
 
-  .project {
-    padding: 30px;
+  .site-footer-meta {
+    grid-template-columns: minmax(0, 1.6fr) minmax(260px, 0.8fr);
+    gap: 1.4rem;
+    align-items: start;
+  }
+}
+
+@media (min-width: 1080px) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.2rem;
   }
 
-  .button-row {
-    justify-content: center;
-  }
-
-  .header-inner {
-    align-items: center;
-  }
-
-  .nav {
-    position: absolute;
-    top: 20px;
-    right: 0;
-    margin-top: 0;
+  .site-footer-meta > div:last-child {
+    justify-items: end;
+    text-align: right;
   }
 }
